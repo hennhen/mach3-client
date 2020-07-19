@@ -1,0 +1,60 @@
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\bin\Debug\Mach3-Client.exe.config
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\bin\Debug\Mach3-Client.exe
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\bin\Debug\Mach3-Client.pdb
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csprojAssemblyReference.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\obj\Debug\Interop.Mach4.dll
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.ResolveComReference.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\obj\Debug\Mach3_Client.Form1.resources
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\obj\Debug\Mach3_Client.Properties.Resources.resources
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.GenerateResource.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.CoreCompileInputs.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\obj\Debug\Mach3-Client.exe
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\obj\Debug\Mach3-Client.pdb
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.CopyComplete
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\bin\Debug\Mach3-Client.exe.config
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\bin\Debug\Mach3-Client.exe
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\bin\Debug\Mach3-Client.pdb
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csprojAssemblyReference.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Debug\Interop.Mach4.dll
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.ResolveComReference.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Debug\Mach3_Client.Form1.resources
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Debug\Mach3_Client.Properties.Resources.resources
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.GenerateResource.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.CoreCompileInputs.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.CopyComplete
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Debug\Mach3-Client.exe
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Debug\Mach3-Client.pdb
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\bin\Debug\Mach3-Client.exe.config
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\bin\Debug\Mach3-Client.exe
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\bin\Debug\Mach3-Client.pdb
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\bin\Debug\Newtonsoft.Json.dll
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\bin\Debug\Newtonsoft.Json.xml
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csprojAssemblyReference.cache
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Interop.Mach4.dll
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.ResolveComReference.cache
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Client.Form1.resources
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Client.Properties.Resources.resources
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.GenerateResource.cache
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.CopyComplete
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3-Client.exe
+C:\Users\user\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3-Client.pdb
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\bin\Debug\Mach3-Client.exe.config
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\bin\Debug\Mach3-Client.exe
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\bin\Debug\Mach3-Client.pdb
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csprojAssemblyReference.cache
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Interop.Mach4.dll
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.ResolveComReference.cache
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Client.Form1.resources
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Client.Properties.Resources.resources
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.GenerateResource.cache
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.CoreCompileInputs.cache
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3_Interface_Server.csproj.CopyComplete
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3-Client.exe
+C:\Users\Henry\Desktop\remotenc-cloudmill\C# Mach3-client\Mach3-Client\obj\Debug\Mach3-Client.pdb

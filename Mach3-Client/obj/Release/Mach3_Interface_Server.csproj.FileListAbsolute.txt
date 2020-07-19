@@ -1,0 +1,15 @@
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\bin\Release\Mach3-Client.exe.config
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\bin\Release\Mach3-Client.exe
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\bin\Release\Mach3-Client.pdb
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\bin\Release\Newtonsoft.Json.dll
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\bin\Release\Newtonsoft.Json.xml
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Release\Mach3_Interface_Server.csprojAssemblyReference.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Release\Interop.Mach4.dll
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Release\Mach3_Interface_Server.csproj.ResolveComReference.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Release\Mach3_Client.Form1.resources
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Release\Mach3_Client.Properties.Resources.resources
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Release\Mach3_Interface_Server.csproj.GenerateResource.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Release\Mach3_Interface_Server.csproj.CoreCompileInputs.cache
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Release\Mach3_Interface_Server.csproj.CopyComplete
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Release\Mach3-Client.exe
+C:\Users\Henry\Desktop\Mach3-client\Mach3-Client\obj\Release\Mach3-Client.pdb
