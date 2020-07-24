@@ -1,5 +1,4 @@
 const express = require('express');
-const Peer = require('simple-peer');
 const axios = require('axios');
 const io = require('socket.io')();
 const app = express();

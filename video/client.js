@@ -1,7 +1,7 @@
 import Peer from 'simple-peer';
 import io from 'socket.io-client';
 
-let stream, socket;
+let socket;
 
 const connectVideo = async () => {
   const stream = await navigator.mediaDevices.getUserMedia({
