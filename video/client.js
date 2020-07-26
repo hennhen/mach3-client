@@ -21,11 +21,15 @@ const socketConnect = async () => {
   socket.on('video', ({ signal, socketID }) => {
     const peer = new Peer({
       initiator: false,
-      trickle: false,
       stream: document.getElementById('video').srcObject
     });
     peer.on('signal', (data) => {
       socket.emit('video', { signal: data, socketID: socketID });
+    });
+
+    peer.on('error', (error) => {
+      console.error(error);
+      peer.destroy();
     });
 
     peer.signal(signal);
