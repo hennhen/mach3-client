@@ -17,7 +17,7 @@ let socket;
 io.on('connection', (socketConnected) => {
   socket = socketConnected;
   socketConnected.on('video', async (data) => {
-    axios.post('http://4b42db117a92.ngrok.io/video', data);
+    axios.post('http://837ec57988b8.ngrok.io/video', data);
   });
 });
 

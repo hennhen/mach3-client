@@ -58,7 +58,7 @@ const connectVideo = async () => {
 };
 
 const socketConnect = async () => {
-  socket = await io('0.0.0.0:4000');
+  socket = await io('localhost:4000');
 
   socket.on('connect', () => {
     console.log('CONNECTED');
