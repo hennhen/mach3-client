@@ -1,27 +1,22 @@
+const config = require('config');
 const express = require('express');
-const axios = require('axios');
-const io = require('socket.io')();
+
 const app = express();
-const port = 4000;
+
+const PORT = process.env.PORT || config.port;
+
+const server = app.listen(PORT, () => {
+  console.log('Express started on PORT: ', PORT);
+});
+
+require('./io').initialize(server);
+require('./udp')(server);
+require('./tcp').initialize(); // Instantiates and start TCP server
 
 app.use(express.json());
 
-const httpServer = app.listen(port, () =>
-  console.log(`App is listening on port ${port}`)
-);
-
-io.listen(httpServer);
-
-let socket;
-
-io.on('connection', (socketConnected) => {
-  socket = socketConnected;
-  socketConnected.on('video', async (data) => {
-    axios.post('https://nameless-shore-45278.herokuapp.com/video', data);
-  });
-});
-
 app.post('/', (req, res) => {
-  socket.emit('video', req.body);
+  const socket = require('./socket').socket();
+  socket.emit('rtc', req.body);
   res.status(200).end();
 });
