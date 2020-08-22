@@ -14,7 +14,7 @@ class WebRTC {
     });
 
     peer.on('signal', (data) => {
-      socket.emit('video', {
+      socket.emit('rtc', {
         signal: data,
         socketID: document.getElementById('socketID').innerText
       });
@@ -64,7 +64,7 @@ const socketConnect = async () => {
     console.log('CONNECTED');
   });
 
-  socket.on('video', ({ signal, socketID }) => {
+  socket.on('rtc', ({ signal, socketID }) => {
     document.getElementById('socketID').innerText = socketID;
     webRTC.peer.signal(signal);
   });

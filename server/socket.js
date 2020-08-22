@@ -5,8 +5,7 @@ let socket = null;
 module.exports.set = (newSocket) => {
   socket = newSocket;
   socket.on('rtc', async (data) => {
-    console.log('hello');
-    axios.post('http://localhost:3333/rtc', data);
+    axios.post('http://localhost:3333/api/rtc', data);
   });
   return socket;
 };
