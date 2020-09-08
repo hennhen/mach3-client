@@ -26,9 +26,20 @@ class WebRTC {
 
     peer.on('close', () => {
       console.log('peer closed');
+      console.log(socket);
+      socket.off('data');
+      socket.emit('close', null);
       this.peer = this.buildPeer();
       this.peer.addStream(document.getElementById('video1').srcObject);
       this.peer.addStream(document.getElementById('video2').srcObject);
+    });
+
+    peer.on('connect', () => {
+      console.log('connected');
+      socket.on('data', (data) => {
+        const dataString = JSON.stringify(data);
+        this.peer.send(dataString);
+      });
     });
 
     return peer;
