@@ -21,7 +21,8 @@ const UDP = (server) => {
   // Emit to socket
   udpServer.on('message', (msg) => {
     const socket = require('./socket').socket();
-    socket.emit('udpData', msg.toString());
+    // TODO: Add conditional to only emit if rtc is connected
+    if (socket) socket.emit('data', msg.toString());
   });
 
   // TODO: Have mach3 client emit current line of gcode
