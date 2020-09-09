@@ -37,8 +37,7 @@ class WebRTC {
     peer.on('connect', () => {
       console.log('connected');
       socket.on('data', (data) => {
-        const dataString = JSON.stringify(data);
-        this.peer.send(dataString);
+        this.peer.send(data);
       });
     });
 
