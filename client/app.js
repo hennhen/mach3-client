@@ -61,7 +61,8 @@ const connectVideo = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
       video: {
         deviceId: { exact: id }
-      }
+      },
+      audio: idx === 0
     });
     document.getElementById(`video${idx + 1}`).srcObject = stream;
     webRTC.peer.addStream(stream);
