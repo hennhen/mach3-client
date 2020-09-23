@@ -1,15 +1,30 @@
-const sio = require('socket.io');
+import sio, { Server, Socket } from 'socket.io';
+import { getSocket, set } from './socket';
 
-let io = null;
+let io: Server = null;
 
-module.exports.io = () => {
+export const getIO = () => {
   return io;
 };
 
-module.exports.initialize = (server) => {
+export const initialize = (server: any) => {
   io = sio(server);
-  io.on('connection', (socket) => {
-    socket = require('./socket').set(socket);
+  io.on('connection', (socket: Socket) => {
+    const localSocket = getSocket();
+    if (localSocket) {
+      socket.on('rtc', (data: string) => {
+        localSocket.emit('rtc', { data, id: socket.id });
+      });
+      socket.on('disconnect', () => {
+        localSocket.emit('disconnect', socket.id);
+      });
+    } else {
+      socket = set(socket);
+      socket.on('rtc', (dataString: string) => {
+        const { data, id } = JSON.parse(dataString);
+        io.to(id).emit('rtc', data);
+      });
+    }
   });
   return io;
 };

@@ -1,10 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import { Container, Grid } from '@material-ui/core';
+import io from 'socket.io-client';
 import { Video } from '../components';
 
 const Dashboard = () => {
   const videoOne = useRef<HTMLVideoElement>(null);
   const videoTwo = useRef<HTMLVideoElement>(null);
+  const socket = useRef<any>(null);
 
   useEffect(() => {
     const connectVideo = async () => {
@@ -34,8 +36,19 @@ const Dashboard = () => {
       }
     };
 
-    connectVideo();
+    // connectVideo();
   }, [videoOne, videoTwo]);
+
+  useEffect(() => {
+    const socketConnect = async () => {
+      socket.current = await io('http://localhost:5000');
+      socket.current.on('connect', () => {
+        console.log('CONNECTED');
+      });
+    };
+
+    socketConnect();
+  }, []);
 
   return (
     <Container>
