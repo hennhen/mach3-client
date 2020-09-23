@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
 import { getIO } from './io';
 
-let socket: Socket = null;
+let socket: Socket | undefined = undefined;
 
 export const set = (newSocket: Socket) => {
   socket = newSocket;
@@ -11,8 +11,8 @@ export const set = (newSocket: Socket) => {
   });
 
   socket.on('rtc', (dataString: string) => {
-    const { data, id } = JSON.parse(dataString);
-    getIO().sockets.sockets[id].emit('rtc', data);
+    const { signal, id } = JSON.parse(dataString);
+    getIO().to(id).emit('rtc', signal);
   });
 
   return socket;

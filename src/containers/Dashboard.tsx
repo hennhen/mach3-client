@@ -1,12 +1,47 @@
 import React, { useRef, useEffect } from 'react';
 import { Container, Grid } from '@material-ui/core';
 import io from 'socket.io-client';
+import Peer, { Instance } from 'simple-peer';
 import { Video } from '../components';
 
 const Dashboard = () => {
   const videoOne = useRef<HTMLVideoElement>(null);
   const videoTwo = useRef<HTMLVideoElement>(null);
   const socket = useRef<any>(null);
+  const peers = useRef<{ [id: string]: Instance }>({});
+
+  const buildPeer = (id: string) => {
+    const peer = new Peer({
+      initiator: false
+    });
+
+    if (videoOne.current)
+      peer.addStream(videoOne.current.srcObject as MediaStream);
+
+    if (videoTwo.current)
+      peer.addStream(videoTwo.current.srcObject as MediaStream);
+
+    peer.on('signal', (signal) => {
+      socket.current.emit('rtc', { signal, id });
+    });
+
+    peer.on('error', (error) => {
+      console.error(error);
+    });
+
+    peer.on('close', () => {
+      console.log('peer closed');
+      const newPeers = { ...peers.current };
+      delete newPeers[id];
+      peers.current = newPeers;
+    });
+
+    peer.on('connect', () => {
+      console.log('peer connected');
+    });
+
+    return peer;
+  };
 
   useEffect(() => {
     const connectVideo = async () => {
@@ -36,7 +71,7 @@ const Dashboard = () => {
       }
     };
 
-    // connectVideo();
+    connectVideo();
   }, [videoOne, videoTwo]);
 
   useEffect(() => {
@@ -44,6 +79,16 @@ const Dashboard = () => {
       socket.current = await io('http://localhost:5000');
       socket.current.on('connect', () => {
         console.log('CONNECTED');
+      });
+      socket.current.on('rtc', (dataString: string) => {
+        const { id, signal } = JSON.parse(dataString);
+        let peer: Instance;
+        if (!peers.current[id]) {
+          peer = buildPeer(id);
+          const newPeers = { ...peers.current, id: peer };
+          peers.current = newPeers;
+        } else peer = peers.current[id];
+        peer.signal(signal);
       });
     };
 
