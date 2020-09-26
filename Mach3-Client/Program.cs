@@ -17,7 +17,7 @@ namespace Mach3_Interface_Server {
     static class Program {
         public static IPAddress MY_IP;
         private static string AUTHORIZED_IP;
-        public static string AUTH_PASSWORD = "123456789";
+        public static string AUTH_PASSWORD = "123";
 
         //public static volatile bool DISCOVERY_MODE_FLAG = true;
         //private static volatile bool UDP_STREAMING_FLAG = false;
@@ -97,6 +97,7 @@ namespace Mach3_Interface_Server {
                             case "auth_request":
                                 Debug.Print("t_TCPRecieve: Received Auth Request");
                                 Debug.Print(packet.data.auth_password);
+
                                 if (packet.data.auth_password == AUTH_PASSWORD) {
                                     Debug.Print("t_TCPRecieve: Correct Password");
                                     // Check if we are already streaming and stop it

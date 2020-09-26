@@ -1,23 +1,25 @@
-import { Socket } from 'socket.io';
-import { getIO } from './io';
+import { Socket } from "socket.io";
+import { getIO } from "./io";
 
 let socket: Socket | undefined = undefined;
 
 export const set = (newSocket: Socket) => {
-  socket = newSocket;
+   socket = newSocket;
 
-  socket.on('close', () => {
-    // TODO: Add mechanism to turn off data fetching from udp server
-  });
+   socket.on("disconnect", () => {
+      console.log("local socket disconnected");
+      socket = undefined;
+   });
 
-  socket.on('rtc', (dataString: string) => {
-    const { signal, id } = JSON.parse(dataString);
-    getIO().to(id).emit('rtc', signal);
-  });
+   socket.on("rtc", (data: { signal: string; id: string }) => {
+      const { signal, id } = data;
+      const io = getIO();
+      if (io) io.to(id).emit("rtc", signal);
+   });
 
-  return socket;
+   return socket;
 };
 
 export const getSocket = () => {
-  return socket;
+   return socket;
 };

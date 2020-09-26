@@ -1,116 +1,87 @@
-export {};
-// const net = require('net');
-// const config = require('config');
+import net from 'net';
+import config from 'config';
 
-// let tcp: any = null;
+export const tcp = () => {
+  const handleConnection = (socket: net.Socket) => {
+    const remoteAddress = socket.remoteAddress + ':' + socket.remotePort;
+    console.log('TCP: new client connection from %s', remoteAddress);
 
-// class TCP {
-//   server: any;
+    const onConnData = (d: Buffer) => {
+      // TODO: Handle incoming TCP data
+      console.log('TCP: connection data from %s: %j', remoteAddress, d);
+      socket.write(d);
+    };
 
-//   constructor() {
-//     this.server = net.createServer();
-//     this.server.on('connection', this._handleConnection);
-//     this.server.listen(config.tcpPort, () => {
-//       console.log('TCP Server bound to port: ', config.tcpPort);
-//     });
-//   }
+    const onConnClose = () => {
+      console.log('TCP: connection from %s closed', remoteAddress);
+    };
 
-//   _handleConnection(conn) {
-//     const remoteAddress = conn.remoteAddress + ':' + conn.remotePort;
-//     console.log('TCP: new client connection from %s', remoteAddress);
+    const onConnError = (err: Error) => {
+      console.log('TCP: Connection %s error: %s', remoteAddress, err.message);
+    };
 
-//     const onConnData = (d) => {
-//       // TODO: Handle incoming TCP data
-//       console.log('TCP: connection data from %s: %j', remoteAddress, d);
-//       conn.write(d);
-//     };
+    socket.on('data', onConnData);
+    socket.once('close', onConnClose);
+    socket.on('error', onConnError);
+  };
 
-//     const onConnClose = () => {
-//       console.log('TCP: connection from %s closed', remoteAddress);
-//     };
+  const server = net.createServer();
+  server.on('connection', handleConnection);
+  server.listen(config.get('tcpPort'), () => {
+    console.log('TCP Server bound to port: ', config.get('tcpPort'));
+  });
+};
 
-//     const onConnError = (err) => {
-//       console.log('TCP: Connection %s error: %s', remoteAddress, err.message);
-//     };
+// Esbalish request,
+const sendTCPPacket = (data: object, cb?: Function) => {
+  console.log('sendTCPPacket(): Sending: %s', data);
+  // Create new client for the outgoing request, destroy when done
+  const client = new net.Socket();
 
-//     conn.on('data', onConnData);
-//     conn.once('close', onConnClose);
-//     conn.on('error', onConnError);
-//   }
+  // Receive response from the Mach3 computer after sending out
+  client.on('data', (data) => {
+    client.destroy();
+    if (cb) cb(data);
+  });
 
-//   sendAuthRequest(data, cb) {
-//     data = Object.assign(
-//       {
-//         type: 'auth_request',
-//         auth_udp_port: config.udpPort
-//       },
-//       data
-//     );
-//     this.sendTCPPacket(data, cb);
-//   }
+  client.setTimeout(3000, () => {
+    console.log(
+      'TCP Send Auth Request: Connection Timeout. Check if the target Endpoing is correct'
+    );
+    client.destroy();
+  });
 
-//   sendDisconnectRequest(data, cb) {
-//     data = Object.assign(
-//       {
-//         type: 'disconnect_request'
-//       },
-//       data
-//     );
-//     this.sendTCPPacket(data, cb);
-//   }
+  client.on('close', () => {
+    console.log('Connection Closed');
+  });
 
-//   sendCommand(data, cb) {
-//     data = Object.assign(
-//       {
-//         type: 'mach3_command'
-//       },
-//       data
-//     );
-//     this.sendTCPPacket(data, cb);
-//   }
+  try {
+    client.connect(config.get('mach3Port'), '0.0.0.0', () => {
+      console.log(`TCP Auth Request: Connected to Mach3`);
+      client.write(JSON.stringify(data));
+    });
+  } catch (e) {
+    console.log(e);
+    console.log('Probably wrong endpoint or endpoint is incorrect');
+    client.destroy();
+  }
+};
 
-//   // Esbalish request,
-//   sendTCPPacket(data, cb) {
-//     console.log('sendTCPPacket(): Sending: %s', data);
-//     // Create new client for the outgoing request, destroy when done
-//     const client = new net.Socket();
+export const sendAuthRequest = (cb?: Function) => {
+  const data = {
+    type: 'auth_request',
+    auth_password: '123',
+    auth_udp_port: config.get('udpPort')
+  };
+  sendTCPPacket(data, cb);
+};
 
-//     // Receive response from the Mach3 computer after sending out
-//     client.on('data', (data) => {
-//       client.destroy();
-//       cb(data);
-//     });
+export const sendDisconnectRequest = (cb?: Function) => {
+  const data = { type: 'disconnect_request' };
+  sendTCPPacket(data, cb);
+};
 
-//     client.setTimeout(3000, () => {
-//       console.log(
-//         'TCP Send Auth Request: Connection Timeout. Check if the target Endpoing is correct'
-//       );
-//       client.destroy();
-//     });
-
-//     client.on('close', () => {
-//       console.log('Connection Closed');
-//     });
-
-//     try {
-//       client.connect(data.targetPort, data.targetIP, () => {
-//         console.log(
-//           `TCP Auth Request: Connected to ${data.targetIP}:${data.targetPort}`
-//         );
-//         client.write(JSON.stringify(data));
-//       });
-//     } catch (e) {
-//       console.log(e);
-//       console.log('Probably wrong endpoint or endpoint is incorrect');
-//       client.destroy();
-//     }
-//   }
-// }
-
-// module.exports.tcp = () => {
-//   return tcp;
-// };
-
-// module.exports.initialize = () => {
-//   tcp = new TCP();
-// };
+export const sendCommand = (data: object, cb?: Function) => {
+  data = { ...data, type: 'mach3_command' };
+  sendTCPPacket(data, cb);
+};

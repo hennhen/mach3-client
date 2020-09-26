@@ -11,22 +11,29 @@ const Dashboard = () => {
   const peers = useRef<{ [id: string]: Instance }>({});
 
   const buildPeer = (id: string) => {
-    const peer = new Peer({
-      initiator: false
-    });
+    const streams: MediaStream[] = [];
 
     if (videoOne.current)
-      peer.addStream(videoOne.current.srcObject as MediaStream);
+      streams.push(videoOne.current.srcObject as MediaStream);
 
     if (videoTwo.current)
-      peer.addStream(videoTwo.current.srcObject as MediaStream);
+      streams.push(videoTwo.current.srcObject as MediaStream);
+
+    const stream = videoOne.current
+      ? (videoOne.current.srcObject as MediaStream)
+      : undefined;
+
+    const peer = new Peer({
+      initiator: false,
+      stream: stream
+    });
 
     peer.on('signal', (signal) => {
       socket.current.emit('rtc', { signal, id });
     });
 
-    peer.on('error', (error) => {
-      console.error(error);
+    peer.on('error', (error: any) => {
+      console.error(error.code);
     });
 
     peer.on('close', () => {
@@ -47,7 +54,10 @@ const Dashboard = () => {
     const connectVideo = async () => {
       if (!videoOne.current || !videoTwo.current) return;
 
-      await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true
+      });
 
       const deviceIDs: string[] = [];
 
@@ -80,15 +90,23 @@ const Dashboard = () => {
       socket.current.on('connect', () => {
         console.log('CONNECTED');
       });
-      socket.current.on('rtc', (dataString: string) => {
-        const { id, signal } = JSON.parse(dataString);
+      socket.current.on('rtc', (data: { signal: string; id: string }) => {
+        const { id, signal } = data;
         let peer: Instance;
         if (!peers.current[id]) {
+          console.log(id);
           peer = buildPeer(id);
-          const newPeers = { ...peers.current, id: peer };
+          const newPeers = { ...peers.current };
+          newPeers[id] = peer;
           peers.current = newPeers;
         } else peer = peers.current[id];
         peer.signal(signal);
+      });
+      socket.current.on('data', (data: string) => {
+        for (const id in peers.current) {
+          const peer = peers.current[id];
+          peer.send(data);
+        }
       });
     };
 
