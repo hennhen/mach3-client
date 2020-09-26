@@ -12,7 +12,8 @@ export const set = (newSocket: Socket) => {
 
   socket.on('rtc', (dataString: string) => {
     const { signal, id } = JSON.parse(dataString);
-    getIO().to(id).emit('rtc', signal);
+    const io = getIO()
+    if(io) io.to(id).emit('rtc', signal);
   });
 
   return socket;

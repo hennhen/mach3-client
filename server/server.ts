@@ -1,6 +1,9 @@
 import express from 'express';
+import cors from 'cors';
 
 import { initialize } from './io';
+import { udp } from './udp';
+import { tcp } from './tcp';
 
 const app = express();
 
@@ -11,7 +14,11 @@ const server = app.listen(PORT, () => {
 });
 
 initialize(server);
-// require('./udp')(server);
 // require('./tcp').initialize(); // Instantiates and start TCP server
 
 app.use(express.json());
+
+app.use(cors());
+
+udp(server);
+tcp();

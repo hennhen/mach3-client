@@ -1,1 +1,1 @@
-{ "udpPort": 57575, "tcpPort": 54545, "port": 4000 }
+{ "udpPort": 57575, "tcpPort": 54545, "mach3Port": 5555, "port": 4000 }
