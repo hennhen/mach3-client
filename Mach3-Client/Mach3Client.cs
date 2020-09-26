@@ -67,7 +67,7 @@ namespace Mach3_Interface_Server {
                     Debug.Print("Received unknown command: " + command);
                     break;
             }
-            // TODO: This blocks???
+            // TODO: This blocks??? when we do open GCode Window
         }
 
         private void getCoors() {
@@ -84,6 +84,17 @@ namespace Mach3_Interface_Server {
         public void updateData() {
             // TODO: Catch InvalidCastexception for when Mach3 closes suddenly
             getCoors();
+
+            outgoingJson.line_num = Mach3.GetOEMDRO(816);
+
+            outgoingJson.set_rpm = Mach3.GetOEMDRO(817);
+            outgoingJson.true_rpm = Mach3.GetOEMDRO(39);
+
+            outgoingJson.feedrate = Mach3.GetOEMDRO(818);
+
+            outgoingJson.tool_num = Mach3.GetOEMDRO(824);
+
+            outgoingJson.elapsed_time = Mach3.GetOEMDRO(814);
         }
 
         /// 
