@@ -14,7 +14,6 @@ const server = app.listen(PORT, () => {
 });
 
 initialize(server);
-// require('./tcp').initialize(); // Instantiates and start TCP server
 
 app.use(express.json());
 

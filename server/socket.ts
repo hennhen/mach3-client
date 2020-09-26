@@ -7,13 +7,14 @@ export const set = (newSocket: Socket) => {
   socket = newSocket;
 
   socket.on('close', () => {
-    // TODO: Add mechanism to turn off data fetching from udp server
+    console.log('local socket disconnected');
+    socket = undefined;
   });
 
   socket.on('rtc', (dataString: string) => {
     const { signal, id } = JSON.parse(dataString);
-    const io = getIO()
-    if(io) io.to(id).emit('rtc', signal);
+    const io = getIO();
+    if (io) io.to(id).emit('rtc', signal);
   });
 
   return socket;
