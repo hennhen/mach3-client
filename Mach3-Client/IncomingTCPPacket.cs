@@ -22,7 +22,7 @@ namespace Mach3_Client {
         public class Data {
             public string type { get; set; }
             public string command { get; set; }
-            public string auth_password { get; set; }
+            //public string auth_password { get; set; }
             public int auth_udp_port { get; set; }
         }
 
