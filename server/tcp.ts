@@ -33,7 +33,7 @@ export const tcp = () => {
 };
 
 // Esbalish request,
-const sendTCPPacket = (data: object, cb: Function) => {
+const sendTCPPacket = (data: object, cb?: Function) => {
   console.log('sendTCPPacket(): Sending: %s', data);
   // Create new client for the outgoing request, destroy when done
   const client = new net.Socket();
@@ -41,7 +41,7 @@ const sendTCPPacket = (data: object, cb: Function) => {
   // Receive response from the Mach3 computer after sending out
   client.on('data', (data) => {
     client.destroy();
-    cb(data);
+    if (cb) cb(data);
   });
 
   client.setTimeout(3000, () => {
@@ -67,21 +67,21 @@ const sendTCPPacket = (data: object, cb: Function) => {
   }
 };
 
-export const sendAuthRequest = (data: object, cb: Function) => {
-  data = {
-    ...data,
+export const sendAuthRequest = (cb?: Function) => {
+  const data = {
     type: 'auth_request',
+    auth_password: '123',
     auth_udp_port: config.get('udpPort')
   };
   sendTCPPacket(data, cb);
 };
 
-export const sendDisconnectRequest = (data: object, cb: Function) => {
-  data = { ...data, type: 'disconnect_request' };
+export const sendDisconnectRequest = (cb?: Function) => {
+  const data = { type: 'disconnect_request' };
   sendTCPPacket(data, cb);
 };
 
-export const sendCommand = (data: object, cb: Function) => {
+export const sendCommand = (data: object, cb?: Function) => {
   data = { ...data, type: 'mach3_command' };
   sendTCPPacket(data, cb);
 };
