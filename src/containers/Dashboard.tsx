@@ -11,22 +11,15 @@ const Dashboard = () => {
   const peers = useRef<{ [id: string]: Instance }>({});
 
   const buildPeer = (id: string) => {
-    const streams: MediaStream[] = [];
+    const peer = new Peer({
+      initiator: false
+    });
 
     if (videoOne.current)
-      streams.push(videoOne.current.srcObject as MediaStream);
+      peer.addStream(videoOne.current.srcObject as MediaStream);
 
     if (videoTwo.current)
-      streams.push(videoTwo.current.srcObject as MediaStream);
-
-    const stream = videoOne.current
-      ? (videoOne.current.srcObject as MediaStream)
-      : undefined;
-
-    const peer = new Peer({
-      initiator: false,
-      stream: stream
-    });
+      peer.addStream(videoTwo.current.srcObject as MediaStream);
 
     peer.on('signal', (signal) => {
       socket.current.emit('rtc', { signal, id });
