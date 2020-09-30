@@ -13,22 +13,25 @@ export const initialize = (server: any) => {
   io.on('connection', (socket: Socket) => {
     if (!io) return;
     const localSocket = getSocket();
-    if (localSocket) {
-      const clients = Object.keys(io.sockets.sockets);
-      if (clients.length === 2) sendAuthRequest();
+    const address = socket.handshake.address;
+    if (localSocket && address !== '::1') {
+      const nClients = Object.keys(io.sockets.sockets).length - 1;
+      if (nClients === 1) sendAuthRequest();
       console.log('client socket connected');
       socket.on('rtc', (signal: string) => {
         localSocket.emit('rtc', { signal, id: socket.id });
       });
       socket.on('disconnect', () => {
         if (!io) return;
-        const updatedClients = Object.keys(io.sockets.sockets);
-        if (updatedClients.length === 2) sendDisconnectRequest();
+        const nClients = Object.keys(io.sockets.sockets).length - 1;
+        if (nClients === 1) sendDisconnectRequest();
         console.log('client socket disconnected');
       });
-    } else {
+    } else if (address === '::1') {
       console.log('local socket connected');
       socket = set(socket);
+    } else {
+      socket.disconnect(true);
     }
   });
   return io;

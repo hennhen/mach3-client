@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Container, Grid, Button } from '@material-ui/core';
+import { Container, Grid, Button, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
 import io from 'socket.io-client';
@@ -27,6 +27,8 @@ const RedButton = withStyles((theme) => ({
 }))(Button);
 
 const Dashboard = () => {
+  const [connected, setConnected] = useState<boolean>(false);
+
   const [recording, setRecording] = useState<boolean>(false);
   const [blobOne, setBlobOne] = useState<Blob[]>([]);
   const [blobTwo, setBlobTwo] = useState<Blob[]>([]);
@@ -35,6 +37,7 @@ const Dashboard = () => {
   const videoTwo = useRef<HTMLVideoElement>(null);
   const mediaRecordingOne = useRef<MediaRecorder>(null);
   const mediaRecordingTwo = useRef<MediaRecorder>(null);
+
   const socket = useRef<any>(null);
   const peers = useRef<{ [id: string]: Instance }>({});
 
@@ -142,6 +145,11 @@ const Dashboard = () => {
       socket.current = await io('http://localhost:5000');
       socket.current.on('connect', () => {
         console.log('CONNECTED');
+        setConnected(true);
+      });
+      socket.current.on('disconnect', () => {
+        console.log('DISCONNECTED');
+        setConnected(false);
       });
       socket.current.on('rtc', (data: { signal: string; id: string }) => {
         const { id, signal } = data;
@@ -184,7 +192,6 @@ const Dashboard = () => {
   const startRecording = () => {
     setRecording(true);
     if (mediaRecordingOne.current) mediaRecordingOne.current.start();
-
     if (mediaRecordingTwo.current) mediaRecordingTwo.current.start();
   };
 
@@ -199,6 +206,16 @@ const Dashboard = () => {
   ) : (
     <GreenButton onClick={startRecording}>Start Recording</GreenButton>
   );
+
+  if (!connected)
+    return (
+      <>
+        <Typography>
+          Waiting to connect, if this is taking too long, please ensure this is
+          the only mach3 client open.
+        </Typography>
+      </>
+    );
 
   return (
     <Container>
