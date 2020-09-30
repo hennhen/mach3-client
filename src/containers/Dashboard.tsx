@@ -97,8 +97,10 @@ const Dashboard = () => {
       });
       socket.current.on('data', (data: string) => {
         for (const id in peers.current) {
-          const peer = peers.current[id];
-          peer.send(data);
+          const curPeer = peers.current[id];
+          try {
+            if (curPeer) curPeer.send(data);
+          } catch (error) {}
         }
       });
     };

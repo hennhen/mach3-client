@@ -11,6 +11,7 @@ export const getIO = () => {
 export const initialize = (server: any) => {
   io = sio(server);
   io.on('connection', (socket: Socket) => {
+    if (!io) return;
     const localSocket = getSocket();
     if (localSocket) {
       const clients = Object.keys(io.sockets.sockets);
@@ -20,6 +21,7 @@ export const initialize = (server: any) => {
         localSocket.emit('rtc', { signal, id: socket.id });
       });
       socket.on('disconnect', () => {
+        if (!io) return;
         const updatedClients = Object.keys(io.sockets.sockets);
         if (updatedClients.length === 2) sendDisconnectRequest();
         console.log('client socket disconnected');

@@ -19,7 +19,7 @@ namespace Mach3_Client {
 
         IPAddress LOCAL_IP;
 
-        public int LOCAL_TCP_PORT { get; private set; } = 55555;   // Temperory, should be between 49152-65535
+        public int LOCAL_TCP_PORT { get; private set; } = 5555;   // Temperory, should be between 49152-65535
 
 
         /// <summary>

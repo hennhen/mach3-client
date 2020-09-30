@@ -14,8 +14,16 @@ namespace Mach3_Client {
 
         public Coors coors { get; set; }
 
-        public int line_num { get; set; }
-        public double rpm { get; set; }
+        public double line_num { get; set; }
+        public double set_rpm { get; set; }
+
+        public double true_rpm { get; set; }
+
+        public double feedrate { get; set; }
+
+        public double tool_num { get; set; }
+
+        public double elapsed_time { get; set; }
 
         public class Coors {
             public double x { get; set; }
