@@ -1,30 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Container, Grid, Button, Typography } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { green, red } from '@material-ui/core/colors';
 import io from 'socket.io-client';
 import Peer, { Instance } from 'simple-peer';
-import { Video } from '../components';
-
-const GreenButton = withStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText(green[700]),
-    backgroundColor: green[700],
-    '&:hover': {
-      backgroundColor: green[900]
-    }
-  }
-}))(Button);
-
-const RedButton = withStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText(red[700]),
-    backgroundColor: red[700],
-    '&:hover': {
-      backgroundColor: red[900]
-    }
-  }
-}))(Button);
+import { Video, RedButton, GreenButton } from '../components';
 
 const Dashboard = () => {
   const [connected, setConnected] = useState<boolean>(false);

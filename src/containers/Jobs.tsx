@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import {
   Container,
@@ -8,58 +8,200 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Button
+  Button,
+  Modal as MUIModal
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { AdminContext, MachineContext, JobContext } from '../context';
+import {
+  AdminContext,
+  MachineContext,
+  JobContext,
+  Job,
+  AlertContext
+} from '../context';
+import { patch } from '../hooks';
+import { RedButton, GreenButton, Modal, Form, Field } from '../components';
 
 const Jobs = () => {
+  const [modal, setModal] = useState<React.ReactNode>(null);
   const { machine, setMachine } = useContext(MachineContext);
-  const { admin } = useContext(AdminContext);
+  const { admin, setAdmin } = useContext(AdminContext);
   const { setJob } = useContext(JobContext);
+  const { setAlert } = useContext(AlertContext);
   const history = useHistory();
 
   if (!machine) return <Redirect to='/machines' />;
   if (!admin) return <Redirect to='/' />;
 
-  const jobs = admin.jobs.filter(
-    (job) => job.machine && job.machine.identifier === machine.identifier
-  );
+  const edit = async (job: Job) => {
+    if (!admin) return;
+    try {
+      const content: { [key: string]: string | string[] } = {
+        ...job,
+        machine: job.machine.identifier,
+        user: job.user.identifier
+      } as { [key: string]: string | string[] };
 
-  const contentNode =
-    jobs.length !== 0 ? (
+      if (!content.tool) content.tool = 'tool';
+      if (!content.name) content.name = 'name';
+
+      const data = await patch(`/admin/job/${job.identifier}/`, content);
+
+      const newJobs = admin.jobs.map((newJob) =>
+        newJob.identifier === job.identifier ? data : newJob
+      );
+
+      setAdmin({ ...admin, jobs: newJobs });
+      setModal(null);
+    } catch (err) {
+      setAlert({
+        type: 'error',
+        message: 'Your session has expired, please log in again.'
+      });
+    }
+  };
+
+  const jobsTable = (jobs: Job[], actions?: (job: Job) => React.ReactNode) => {
+    return (
       <Table>
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
+            <TableCell>Company</TableCell>
             <TableCell>Material</TableCell>
+            <TableCell>Tool</TableCell>
+            <TableCell>GCode</TableCell>
             <TableCell>Status</TableCell>
+            {actions ? <TableCell>Actions</TableCell> : null}
           </TableRow>
         </TableHead>
         <TableBody>
           {jobs.map((job, idx) => (
             <TableRow key={idx}>
               <TableCell>{job.name}</TableCell>
+              <TableCell>{job.user.company_name}</TableCell>
               <TableCell>{job.material}</TableCell>
+              <TableCell>{job.tool}</TableCell>
               <TableCell>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  onClick={() => {
-                    setJob(job);
-                    history.push('/dashboard');
-                  }}
-                  disabled={job.status === 'Complete'}
-                >
-                  {job.status === 'Pending' ? 'Start' : job.status}
-                </Button>
+                {job.gcode_array ? (
+                  <Button
+                    onClick={() => {
+                      setModal(
+                        <Modal style={{ maxHeight: 300, overflowY: 'auto' }}>
+                          {job.gcode_array.map((gcode) => (
+                            <Typography>{gcode}</Typography>
+                          ))}
+                        </Modal>
+                      );
+                    }}
+                  >
+                    Preview
+                  </Button>
+                ) : (
+                  'None'
+                )}
               </TableCell>
+              <TableCell>{job.status}</TableCell>
+              {actions ? <TableCell>{actions(job)}</TableCell> : null}
             </TableRow>
           ))}
         </TableBody>
       </Table>
+    );
+  };
+
+  const jobs = admin.jobs.filter(
+    (job) => job.machine && job.machine.identifier === machine.identifier
+  );
+
+  const fields: Field[] = [
+    {
+      required: true,
+      label: 'Name',
+      value: 'name'
+    },
+    {
+      required: true,
+      label: 'Material',
+      value: 'material'
+    },
+    {
+      required: true,
+      label: 'Tool',
+      value: 'tool'
+    },
+    {
+      label: 'GCode',
+      value: 'gcode_array'
+    }
+  ];
+
+  const contentNode =
+    jobs.length !== 0 ? (
+      jobsTable(jobs, (job) => {
+        let ButtonType: any;
+        switch (job.status) {
+          case 'Pending':
+            ButtonType = GreenButton;
+            break;
+          case 'Started':
+            ButtonType = RedButton;
+            break;
+          default:
+            ButtonType = Button;
+        }
+        return (
+          <>
+            <ButtonType
+              variant='contained'
+              color='primary'
+              onClick={() => {
+                setJob(job);
+                edit({ ...job, status: 'Started' });
+                history.push('/dashboard');
+              }}
+              disabled={job.status === 'Complete' || !job.gcode_array}
+            >
+              {job.status === 'Pending' ? 'Start' : job.status}
+            </ButtonType>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={() => {
+                setModal(
+                  <Form
+                    fields={fields}
+                    title='Edit the job'
+                    submit={(inputs) => {
+                      const newJob = {
+                        ...job,
+                        name: inputs.name,
+                        material: inputs.material,
+                        tool: inputs.tool,
+                        gcode_array: inputs.gcode_array.split(',')
+                      };
+                      return edit(newJob);
+                    }}
+                    defaultValues={{
+                      ...job,
+                      gcode_array:
+                        (job.gcode_array && job.gcode_array.join(',')) || '',
+                      machine: '',
+                      user: ''
+                    }}
+                    modal
+                  />
+                );
+              }}
+              style={{ marginLeft: 10 }}
+            >
+              Edit
+            </Button>
+          </>
+        );
+      })
     ) : (
-      <Typography>No jobs created yet.</Typography>
+      <Typography>No jobs added to this machine yet.</Typography>
     );
 
   return (
@@ -78,6 +220,48 @@ const Jobs = () => {
         />
       </div>
       {contentNode}
+      <div style={{ marginTop: 12 }}>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={() => {
+            setModal(
+              <Modal>
+                {jobsTable(
+                  admin.jobs.filter(
+                    (job) =>
+                      !job.machine ||
+                      job.machine.identifier !== machine.identifier
+                  ),
+                  (job) => (
+                    <Button
+                      variant='contained'
+                      color='primary'
+                      onClick={() => {
+                        edit({ ...job, machine: machine });
+                      }}
+                    >
+                      Add Job
+                    </Button>
+                  )
+                )}
+              </Modal>
+            );
+          }}
+        >
+          Add jobs to machine
+        </Button>
+      </div>
+      {
+        <MUIModal
+          open={Boolean(modal)}
+          onClose={() => {
+            setModal(false);
+          }}
+        >
+          <span>{modal}</span>
+        </MUIModal>
+      }
     </Container>
   );
 };

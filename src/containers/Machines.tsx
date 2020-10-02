@@ -82,19 +82,16 @@ const Machines = () => {
   const fields: Field[] = [
     {
       required: true,
-      id: 'standard-required',
       label: 'Name',
       value: 'name'
     },
     {
       required: true,
-      id: 'standard-required',
       label: 'Location',
       value: 'location'
     },
     {
       required: true,
-      id: 'standard-required',
       label: 'IP Address',
       value: 'ip_address'
     }

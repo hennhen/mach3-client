@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { Machine } from './MachineContext';
 
+export type User = {
+  identifier: string;
+  company_name: string;
+};
+
 export type Job = {
+  identifier: string;
   name: string;
   gcode_array: string[];
   status: 'Pending' | 'Started' | 'Complete';
   material: string;
+  tool: string;
   machine: Machine;
-  user: { company: string };
+  user: User;
 };
 
 type JobContextProps = {
