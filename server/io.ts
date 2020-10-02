@@ -1,6 +1,6 @@
 import sio, { Server, Socket } from 'socket.io';
 import { getSocket, set } from './socket';
-import { sendAuthRequest, sendDisconnectRequest } from './tcp';
+import { sendAuthRequest, sendDisconnectRequest, sendCommand } from './tcp';
 
 let io: Server | undefined = undefined;
 
@@ -28,6 +28,11 @@ export const initialize = (server: any) => {
         if (nClients === 1) sendDisconnectRequest();
         console.log('client socket disconnected');
       });
+      socket.on('command', (data: object) => {
+        sendCommand(data, () => {
+          console.log('Command sent to Mach3')
+        })
+      })
     } else if (address === '::1') {
       console.log('local socket connected');
       socket = set(socket);

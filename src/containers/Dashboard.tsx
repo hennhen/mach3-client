@@ -175,8 +175,8 @@ const Dashboard = () => {
     const blob = new Blob(chunks, {
       type: 'video/mp4'
     });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
     document.body.appendChild(a);
     a.style.display = 'none';
     a.href = url;
