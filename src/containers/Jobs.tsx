@@ -11,7 +11,6 @@ import {
   Button,
   Modal as MUIModal
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {
   AdminContext,
   MachineContext,
@@ -19,46 +18,30 @@ import {
   Job,
   AlertContext
 } from '../context';
-import { patch } from '../hooks';
-import { RedButton, GreenButton, Modal, Form, Field } from '../components';
+import { useAuth } from '../hooks';
+import {
+  RedButton,
+  GreenButton,
+  Modal,
+  Form,
+  Field,
+  BackArrow
+} from '../components';
 
 const Jobs = () => {
   const [modal, setModal] = useState<React.ReactNode>(null);
   const { machine, setMachine } = useContext(MachineContext);
-  const { admin, setAdmin } = useContext(AdminContext);
+  const { admin } = useContext(AdminContext);
   const { setJob } = useContext(JobContext);
-  const { setAlert } = useContext(AlertContext);
   const history = useHistory();
+  const { editJob } = useAuth();
 
   if (!machine) return <Redirect to='/machines' />;
   if (!admin) return <Redirect to='/' />;
 
   const edit = async (job: Job) => {
-    if (!admin) return;
-    try {
-      const content: { [key: string]: string | string[] } = {
-        ...job,
-        machine: job.machine.identifier,
-        user: job.user.identifier
-      } as { [key: string]: string | string[] };
-
-      if (!content.tool) content.tool = 'tool';
-      if (!content.name) content.name = 'name';
-
-      const data = await patch(`/admin/job/${job.identifier}/`, content);
-
-      const newJobs = admin.jobs.map((newJob) =>
-        newJob.identifier === job.identifier ? data : newJob
-      );
-
-      setAdmin({ ...admin, jobs: newJobs });
-      setModal(null);
-    } catch (err) {
-      setAlert({
-        type: 'error',
-        message: 'Your session has expired, please log in again.'
-      });
-    }
+    editJob(job);
+    setModal(undefined);
   };
 
   const jobsTable = (jobs: Job[], actions?: (job: Job) => React.ReactNode) => {
@@ -208,17 +191,12 @@ const Jobs = () => {
     <Container>
       <Typography variant='h1'>Machine: {machine.name}</Typography>
       <Typography variant='h2'>Jobs</Typography>
-      <div style={{ padding: '10px 0' }}>
-        <ArrowBackIcon
-          fontSize='large'
-          color='primary'
-          style={{ cursor: 'pointer' }}
-          onClick={() => {
-            setMachine(undefined);
-            history.push('/machines');
-          }}
-        />
-      </div>
+      <BackArrow
+        onClick={() => {
+          setMachine(undefined);
+          history.push('/machines');
+        }}
+      />
       {contentNode}
       <div style={{ marginTop: 12 }}>
         <Button

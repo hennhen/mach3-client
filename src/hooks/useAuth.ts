@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AdminContext, AlertContext } from '../context';
+import { AdminContext, AlertContext, Job } from '../context';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
@@ -31,7 +31,7 @@ export const patch = async (path: string, content: any) => {
 };
 
 const useAuth = () => {
-  const { setAdmin } = useContext(AdminContext);
+  const { admin, setAdmin } = useContext(AdminContext);
   const { setAlert } = useContext(AlertContext);
   const history = useHistory();
 
@@ -90,7 +90,34 @@ const useAuth = () => {
     }
   };
 
-  return { setAuth, login };
+  const editJob = async (job: Job) => {
+    if (!admin) return;
+    try {
+      const content: { [key: string]: string | string[] } = {
+        ...job,
+        machine: job.machine.identifier,
+        user: job.user.identifier
+      } as { [key: string]: string | string[] };
+
+      if (!content.tool) content.tool = 'tool';
+      if (!content.name) content.name = 'name';
+
+      const data = await patch(`/admin/job/${job.identifier}/`, content);
+
+      const newJobs = admin.jobs.map((newJob) =>
+        newJob.identifier === job.identifier ? data : newJob
+      );
+
+      setAdmin({ ...admin, jobs: newJobs });
+    } catch (err) {
+      setAlert({
+        type: 'error',
+        message: 'Something went wrong.'
+      });
+    }
+  };
+
+  return { setAuth, login, editJob };
 };
 
 export { useAuth };

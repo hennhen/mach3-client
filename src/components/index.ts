@@ -5,3 +5,4 @@ export * from './Form';
 export * from './GreenButton';
 export * from './RedButton';
 export * from './Modal';
+export * from './BackArrow';

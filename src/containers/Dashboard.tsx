@@ -1,10 +1,15 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
 import { Container, Grid, Button, Typography } from '@material-ui/core';
 import io from 'socket.io-client';
+import { useHistory } from 'react-router-dom';
 import Peer, { Instance } from 'simple-peer';
-import { Video, RedButton, GreenButton } from '../components';
+import { Video, RedButton, GreenButton, BackArrow } from '../components';
+import { JobContext } from '../context';
+import { useAuth } from '../hooks';
 
 const Dashboard = () => {
+  const history = useHistory();
+
   const [connected, setConnected] = useState<boolean>(false);
 
   const [recording, setRecording] = useState<boolean>(false);
@@ -18,6 +23,17 @@ const Dashboard = () => {
 
   const socket = useRef<any>(null);
   const peers = useRef<{ [id: string]: Instance }>({});
+
+  const { job, setJob } = useContext(JobContext);
+
+  const { editJob } = useAuth();
+
+  const completeJob = async () => {
+    if (!job) return;
+    await editJob({ ...job, status: 'Complete' });
+    setJob(undefined);
+    history.push('/jobs');
+  };
 
   const buildPeer = (id: string) => {
     const streams: MediaStream[] = [];
@@ -116,7 +132,7 @@ const Dashboard = () => {
     };
 
     connectVideo();
-  }, [videoOne, videoTwo]);
+  }, [connected]);
 
   useEffect(() => {
     const socketConnect = async () => {
@@ -197,6 +213,13 @@ const Dashboard = () => {
 
   return (
     <Container>
+      <Typography variant='h1'>Job: {job!.name}</Typography>
+      <BackArrow
+        onClick={() => {
+          setJob(undefined);
+          history.push('/jobs');
+        }}
+      />
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <Video ref={videoOne} />
@@ -240,6 +263,11 @@ const Dashboard = () => {
       >
         Clear Video
       </RedButton>
+      <br />
+      <br />
+      <Button variant='contained' color='primary' onClick={completeJob}>
+        Complete Job
+      </Button>
     </Container>
   );
 };

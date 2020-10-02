@@ -42,7 +42,7 @@ const Machines = () => {
     } catch (err) {
       setAlert({
         type: 'error',
-        message: 'Your session has expired, please log in again.'
+        message: 'Something went wrong.'
       });
     }
   };
@@ -74,7 +74,7 @@ const Machines = () => {
     } catch (err) {
       setAlert({
         type: 'error',
-        message: 'Your session has expired, please log in again.'
+        message: 'Something went wrong.'
       });
     }
   };
