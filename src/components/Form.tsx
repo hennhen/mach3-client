@@ -23,10 +23,20 @@ type FormProps = {
   fields: Field[];
   modal?: boolean;
   children?: React.ReactNode | React.ReactNode[];
+  defaultValues?: { [key: string]: string };
 };
 
-const Form = ({ submit, title, fields, modal, children }: FormProps) => {
-  const [inputs, setInputs] = useState<{ [key: string]: string }>({});
+const Form = ({
+  submit,
+  title,
+  fields,
+  modal,
+  children,
+  defaultValues
+}: FormProps) => {
+  const [inputs, setInputs] = useState<{ [key: string]: string }>(
+    defaultValues || {}
+  );
 
   const handleChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,

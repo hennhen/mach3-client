@@ -65,7 +65,7 @@ const Jobs = () => {
   return (
     <Container>
       <Typography variant='h1'>Machine: {machine.name}</Typography>
-      <Typography variant='h1'>Jobs</Typography>
+      <Typography variant='h2'>Jobs</Typography>
       <div style={{ padding: '10px 0' }}>
         <ArrowBackIcon
           fontSize='large'

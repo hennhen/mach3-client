@@ -21,6 +21,15 @@ export const post = async (path: string, content: any) => {
   return data;
 };
 
+export const patch = async (path: string, content: any) => {
+  const response = await axios.patch(path, content);
+
+  const { status, data } = response.data;
+  if (status !== 'success') throw new Error('Something went wrong.');
+
+  return data;
+};
+
 const useAuth = () => {
   const { setAdmin } = useContext(AdminContext);
   const { setAlert } = useContext(AlertContext);

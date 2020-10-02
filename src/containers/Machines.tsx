@@ -12,7 +12,7 @@ import {
   Modal
 } from '@material-ui/core';
 import { AdminContext, MachineContext, AlertContext } from '../context';
-import { post } from '../hooks';
+import { post, patch } from '../hooks';
 import { Form, Field } from '../components';
 
 const Machines = () => {
@@ -38,6 +38,38 @@ const Machines = () => {
       });
 
       setAdmin({ ...admin, machines: [...admin.machines, data] });
+      setModal(null);
+    } catch (err) {
+      setAlert({
+        type: 'error',
+        message: 'Your session has expired, please log in again.'
+      });
+    }
+  };
+
+  const edit = async (
+    {
+      name,
+      location,
+      ip_address
+    }: {
+      [key: string]: string;
+    },
+    identifier: string
+  ) => {
+    if (!admin) return;
+    try {
+      const data = await patch(`/admin/machine/${identifier}/`, {
+        name,
+        location,
+        ip_address
+      });
+
+      const newMachines = admin.machines.map((machine) =>
+        machine.identifier === identifier ? data : machine
+      );
+
+      setAdmin({ ...admin, machines: newMachines });
       setModal(null);
     } catch (err) {
       setAlert({
@@ -76,21 +108,45 @@ const Machines = () => {
             <TableCell>Name</TableCell>
             <TableCell>Location</TableCell>
             <TableCell>IP Address</TableCell>
+            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {admin.machines.map((machine, idx) => (
-            <TableRow
-              onClick={() => {
-                setMachine(machine);
-                history.push('/jobs');
-              }}
-              key={idx}
-              style={{ cursor: 'pointer' }}
-            >
+            <TableRow key={idx}>
               <TableCell>{machine.name}</TableCell>
               <TableCell>{machine.location}</TableCell>
               <TableCell>{machine.ip_address}</TableCell>
+              <TableCell>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  onClick={() => {
+                    setMachine(machine);
+                    history.push('/jobs');
+                  }}
+                >
+                  Select
+                </Button>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  onClick={() => {
+                    setModal(
+                      <Form
+                        fields={fields}
+                        title='Edit the machine'
+                        submit={(inputs) => edit(inputs, machine.identifier)}
+                        defaultValues={machine}
+                        modal
+                      />
+                    );
+                  }}
+                  style={{ marginLeft: 10 }}
+                >
+                  Edit
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
