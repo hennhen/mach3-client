@@ -14,7 +14,8 @@ export const initialize = (server: any) => {
     if (!io) return;
     const localSocket = getSocket();
     const address = socket.handshake.address;
-    if (localSocket && address !== '::1') {
+    console.log(`New socket from ${address}`)
+    if (localSocket) {
       const nClients = Object.keys(io.sockets.sockets).length - 1;
       if (nClients === 1) sendAuthRequest();
       console.log('client socket connected');

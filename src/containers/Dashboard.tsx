@@ -158,10 +158,13 @@ const Dashboard = () => {
         peer.signal(signal);
       });
       socket.current.on('data', (data: string) => {
-        for (const id in peers.current) {
-          const peer = peers.current[id];
-          peer.send(data);
+        try {
+          for (const id in peers.current) {
+            const peer = peers.current[id];
+            peer.send(data);
+          }
         }
+        catch (err) { }
       });
     };
 
@@ -198,8 +201,8 @@ const Dashboard = () => {
   const buttonNode = recording ? (
     <RedButton onClick={stopRecording}>Stop Recording</RedButton>
   ) : (
-    <GreenButton onClick={startRecording}>Start Recording</GreenButton>
-  );
+      <GreenButton onClick={startRecording}>Start Recording</GreenButton>
+    );
 
   if (!connected)
     return (

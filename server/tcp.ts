@@ -56,7 +56,7 @@ const sendTCPPacket = (data: object, cb?: Function) => {
   });
 
   try {
-    client.connect(config.get('mach3Port'), '192.168.0.193', () => {
+    client.connect(config.get('mach3Port'), '192.168.5.22', () => {
       console.log(`TCP Auth Request: Connected to Mach3`);
       client.write(JSON.stringify(data));
     });
